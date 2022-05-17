@@ -2,6 +2,7 @@ import { EntityRepository, getConnection, Repository } from 'typeorm';
 import { UserEntity } from './user.entity';
 import { CreateUserDto } from './dto/createUser.dto';
 import { UserDto } from './dto/user.dto';
+import { UUIDVersion } from "class-validator";
 
 @EntityRepository(UserEntity)
 export class UserRepository extends Repository<UserEntity> {
@@ -48,13 +49,17 @@ export class UserRepository extends Repository<UserEntity> {
       .getOne();
   }
 
-  async findUserById(id): Promise<UserDto> {
-    return await getConnection()
-      .createQueryBuilder()
-      .select('user')
-      .from(UserEntity, 'user')
-      .where('user.id = :id', { id: id })
-      .getOne();
+  async findUserById(id): Promise<any> {
+    try {
+      return await getConnection()
+        .createQueryBuilder()
+        .select('user')
+        .from(UserEntity, 'user')
+        .where('user.id = :id', { id: id })
+        .getOne();
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   async banUser(dto): Promise<UserDto> {

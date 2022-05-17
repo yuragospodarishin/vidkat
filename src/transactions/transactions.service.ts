@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserRepository } from '../user/user.repository';
 import { TransactionsRepository } from './transactions.repository';
+import { ErrorEnum } from '../enums/error.enum';
 
 @Injectable()
 export class TransactionsService {
@@ -12,9 +13,22 @@ export class TransactionsService {
     private readonly userRepository: UserRepository,
   ) {}
 
-  async creditingBonuses(dto, userFromToken): Promise<any> {
-    const user = await this.userRepository.findUserByEmail(userFromToken.email);
+  async creditingBonuses(dto): Promise<any> {
+    // const test = await this.userRepository.findUserById(dto.fromUser);
+    // console.log('userFrom', test);
+    // if(!test){
+    //   throw new BadRequestException(ErrorEnum.USER_FOR_CREDITING_NOT_FOUND);
+    //
+    // }
 
-    return await this.bonusRepository.creditingBonuses(dto, user.id);
+    const candidateToCrediting = await this.userRepository.findUserById(
+      dto.toUser,
+    );
+
+    if (!candidateToCrediting) {
+      throw new BadRequestException(ErrorEnum.USER_FOR_CREDITING_NOT_FOUND);
+    }
+
+    return await this.bonusRepository.creditingBonuses(dto);
   }
 }

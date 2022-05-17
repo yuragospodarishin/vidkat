@@ -1,7 +1,7 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, HttpCode, Post, UseGuards } from '@nestjs/common';
 import { TransactionsService } from './transactions.service';
-import { User } from '../user/decorators/user.decorator';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { CreateTransactionsDto } from './dto/create.transactions.dto';
 
 @Controller('transaction')
 export class TransactionsController {
@@ -9,7 +9,8 @@ export class TransactionsController {
 
   @Post('/crediting')
   @UseGuards(JwtAuthGuard)
-  async creditingBonuses(@Body() dto, @User() user): Promise<any> {
-    return await this.bonusService.creditingBonuses(dto, user);
+  @HttpCode(200)
+  async creditingBonuses(@Body() dto: CreateTransactionsDto): Promise<any> {
+    return await this.bonusService.creditingBonuses(dto);
   }
 }

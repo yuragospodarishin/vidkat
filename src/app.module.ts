@@ -6,8 +6,6 @@ import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { TransactionsModule } from './transactions/transactions.module';
-import { TokensEntity } from './auth/tokens.entity';
-import { TransactionsEntity } from './transactions/transactions.entity';
 import { UserEntity } from './user/user.entity';
 
 @Module({
@@ -15,19 +13,18 @@ import { UserEntity } from './user/user.entity';
     UserModule,
     AuthModule,
     TransactionsModule,
-    TypeOrmModule.forFeature([
-      UserEntity,
-    ]),
+    TypeOrmModule.forFeature([UserEntity]),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async () => {
         return {
           type: 'postgres',
-          host: process.env.POSTGRES_HOST,
-          port: Number(process.env.POSTGRES_PORT),
-          username: process.env.POSTGRES_USER,
-          password: process.env.POSTGRES_PASSWORD,
-          database: process.env.POSTGRES_DB,
+          host: 'ec2-54-228-218-84.eu-west-1.compute.amazonaws.com',
+          port: 5432,
+          username: 'bncuyzyvhgornd',
+          password:
+            '8267365c8e8d32fd983917069ae04ef33df1ab721e5b80993d6e19002eb4278d',
+          database: 'daoqc8oal2rmsh',
           entities: [__dirname + '/**/*.entity{.ts,.js}'],
           synchronize: true,
         };
