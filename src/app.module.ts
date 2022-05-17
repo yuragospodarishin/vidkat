@@ -22,6 +22,9 @@ import { UserEntity } from './user/user.entity';
       ssl: {
         rejectUnauthorized: false,
       },
+      extra: {
+        ssl: true,
+      },
     }),
     ConfigModule.forRoot({
       envFilePath: ['./.env'],
