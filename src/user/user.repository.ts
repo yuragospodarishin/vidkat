@@ -2,7 +2,6 @@ import { EntityRepository, getConnection, Repository } from 'typeorm';
 import { UserEntity } from './user.entity';
 import { CreateUserDto } from './dto/createUser.dto';
 import { UserDto } from './dto/user.dto';
-import { UUIDVersion } from "class-validator";
 
 @EntityRepository(UserEntity)
 export class UserRepository extends Repository<UserEntity> {
@@ -26,18 +25,10 @@ export class UserRepository extends Repository<UserEntity> {
   }
 
   async findUserByEmail(email: string): Promise<UserDto> {
-    return await getConnection()
-      .createQueryBuilder()
-      .select('user')
-      .from(UserEntity, 'user')
-      .where('user.email = :email', { email: email })
-      .getOne();
+    return await getConnection().createQueryBuilder().select('user').from(UserEntity, 'user').where('user.email = :email', { email: email }).getOne();
   }
 
-  async findUserByEmailAndPhone(
-    email: string,
-    phone: string,
-  ): Promise<UserDto> {
+  async findUserByEmailAndPhone(email: string, phone: string): Promise<UserDto> {
     return await getConnection()
       .createQueryBuilder()
       .select('user')
@@ -49,14 +40,9 @@ export class UserRepository extends Repository<UserEntity> {
       .getOne();
   }
 
-  async findUserById(id): Promise<any> {
+  async findUserById(id): Promise<UserDto> {
     try {
-      return await getConnection()
-        .createQueryBuilder()
-        .select('user')
-        .from(UserEntity, 'user')
-        .where('user.id = :id', { id: id })
-        .getOne();
+      return await getConnection().createQueryBuilder().select('user').from(UserEntity, 'user').where('user.id = :id', { id: id }).getOne();
     } catch (e) {
       console.log(e);
     }

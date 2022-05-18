@@ -2,7 +2,7 @@ import { IsNotEmpty, IsNumber, IsOptional, IsUUID, Min } from 'class-validator';
 import { UserEntity } from '../../user/user.entity';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
-export class CreateTransactionsDto {
+export class TransactionsDto {
   @ApiPropertyOptional({
     example: '1d096ca3-7a52-4cff-b999-1a44c1a17cdd',
     description: 'user ID,',

@@ -1,10 +1,16 @@
-import { EntityRepository, getConnection, Repository } from 'typeorm';
+import {
+  EntityRepository,
+  getConnection,
+  InsertResult,
+  Repository,
+} from 'typeorm';
 import { TransactionsEntity } from './transactions.entity';
 import { CreateTransactionsDto } from './dto/create.transactions.dto';
+import { TransactionsDto } from './dto/transaction.dto';
 
 @EntityRepository(TransactionsEntity)
 export class TransactionsRepository extends Repository<TransactionsEntity> {
-  async creditingBonuses(dto: CreateTransactionsDto): Promise<any> {
+  async saveTransaction(dto: CreateTransactionsDto): Promise<InsertResult> {
     return await getConnection()
       .createQueryBuilder()
       .insert()
@@ -19,13 +25,13 @@ export class TransactionsRepository extends Repository<TransactionsEntity> {
       ])
       .execute();
   }
-  //
-  // async getAllTransactions(dto): Promise<any>{
-  //   return await getConnection()
-  //     .createQueryBuilder()
-  //     .select('transaction')
-  //     .from(TransactionsEntity, 'transaction')
-  //     .where('transaction.toUser = :toUser', { toUser: dto.toUser})
-  //     .getMany();
-  // }
+
+  async findTransactionById(id: string): Promise<TransactionsDto> {
+    return await getConnection()
+      .createQueryBuilder()
+      .select('transaction')
+      .from(TransactionsEntity, 'transaction')
+      .where('transaction.id = :id', { id: id })
+      .getOne();
+  }
 }
