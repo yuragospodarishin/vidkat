@@ -14,12 +14,6 @@ export class TransactionsService {
   ) {}
 
   async creditingBonuses(dto): Promise<any> {
-    // const test = await this.userRepository.findUserById(dto.fromUser);
-    // console.log('userFrom', test);
-    // if(!test){
-    //   throw new BadRequestException(ErrorEnum.USER_FOR_CREDITING_NOT_FOUND);
-    //
-    // }
 
     const candidateToCrediting = await this.userRepository.findUserById(
       dto.toUser,
