@@ -22,8 +22,8 @@ import { UserEntity } from './user/user.entity';
       // username: 'vidkatapi',
       // password: '0000',
       // database: 'vidkatapi',
-      // entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      // synchronize: true,
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      synchronize: true,
       ssl: {
         rejectUnauthorized: false,
       },
