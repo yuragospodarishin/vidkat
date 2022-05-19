@@ -11,7 +11,7 @@ import { AuthService } from './auth.service';
     JwtModule.register({
       secret: process.env.PRIVATE_KEY || 'SECRET_1313',
       signOptions: {
-        expiresIn: 60000,
+        expiresIn: '365d',
       },
     }),
   ],

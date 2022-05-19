@@ -10,8 +10,8 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
 
   const config = new DocumentBuilder()
-    .setTitle('vidkatapi')
-    .setDescription('Documentation vidkatapi')
+    .setTitle('Vidkatapi')
+    .setDescription('Documentation Vidkatapi')
     .setVersion('1.0.0')
     .build();
 

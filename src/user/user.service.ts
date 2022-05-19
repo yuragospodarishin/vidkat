@@ -10,9 +10,15 @@ export class UserService {
     private readonly userRepository: UserRepository,
   ) {}
 
-  async banUser(dto): Promise<UserDto> {
-    const bannedUser = await this.userRepository.banUser(dto);
-    delete bannedUser.password;
-    return bannedUser;
+  async getUser(userId: string): Promise<UserDto> {
+    const user = await this.userRepository.getUser(userId);
+    delete user.password;
+
+    return user;
   }
+  // async banUser(dto): Promise<UserDto> {
+  //   const bannedUser = await this.userRepository.banUser(dto);
+  //   delete bannedUser.password;
+  //   return bannedUser;
+  // }
 }

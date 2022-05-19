@@ -25,7 +25,12 @@ export class UserRepository extends Repository<UserEntity> {
   }
 
   async findUserByEmail(email: string): Promise<UserDto> {
-    return await getConnection().createQueryBuilder().select('user').from(UserEntity, 'user').where('user.email = :email', { email: email }).getOne();
+    return await getConnection()
+      .createQueryBuilder()
+      .select('user')
+      .from(UserEntity, 'user')
+      .where('user.email = :email', { email: email })
+      .getOne();
   }
 
   async findUserByEmailAndPhone(email: string, phone: string): Promise<UserDto> {
@@ -42,20 +47,34 @@ export class UserRepository extends Repository<UserEntity> {
 
   async findUserById(id): Promise<UserDto> {
     try {
-      return await getConnection().createQueryBuilder().select('user').from(UserEntity, 'user').where('user.id = :id', { id: id }).getOne();
+      return await getConnection()
+        .createQueryBuilder()
+        .select('user')
+        .from(UserEntity, 'user')
+        .where('user.id = :id', { id: id })
+        .getOne();
     } catch (e) {
       console.log(e);
     }
   }
 
-  async banUser(dto): Promise<UserDto> {
-    await getConnection()
+  async getUser(userId: string): Promise<UserDto> {
+    return await getConnection()
       .createQueryBuilder()
-      .update(UserEntity)
-      .set({ banned: true, banReason: dto.banReason })
-      .where('id = :id', { id: dto.userId })
-      .execute();
-
-    return await this.findUserById(dto.userId);
+      .select('user')
+      .from(UserEntity, 'user')
+      .where('user.id = :id', { id: userId })
+      .getOne();
   }
+
+  // async banUser(dto): Promise<UserDto> {
+  //   await getConnection()
+  //     .createQueryBuilder()
+  //     .update(UserEntity)
+  //     .set({ banned: true, banReason: dto.banReason })
+  //     .where('id = :id', { id: dto.userId })
+  //     .execute();
+  //
+  //   return await this.findUserById(dto.userId);
+  // }
 }

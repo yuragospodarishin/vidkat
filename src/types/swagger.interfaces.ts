@@ -1,8 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { UserEntity } from '../user/user.entity';
-import { IsNotEmpty, IsNumber, IsOptional, IsUUID, Min } from 'class-validator';
-import e from 'express';
-import { TransactionsDto } from '../transactions/dto/transaction.dto';
+import { RoleEnum } from '../auth/enum/role.enum';
 
 export class IAuthOkResponseTokens {
   @ApiProperty({ example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6Ik......pbCI6IjFAZ' })
@@ -112,4 +110,27 @@ export class INotAuthorized {
   error: string;
 }
 
-export class ITransActionGetAllOkResponse {}
+export class IUserGetOkResponse {
+  @ApiProperty({ example: '4afa8709-ac00-483c-8eb3-fe22aa6d578d' })
+  id: string;
+
+  @ApiProperty({ example: 'Vitaliy' })
+  name: string;
+
+  @ApiProperty({ example: '+380965728272' })
+  phone: string;
+
+  @ApiProperty({ example: 'vidkatapi@gmail.com' })
+  email: string;
+}
+
+export class IUserGetBadRequestResponse {
+  @ApiPropertyOptional({ example: 400 })
+  statusCode: 400;
+
+  @ApiPropertyOptional({ example: 'Any error message' })
+  message: string;
+
+  @ApiPropertyOptional({ example: 'Bad request' })
+  error: string;
+}
