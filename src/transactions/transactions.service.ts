@@ -18,17 +18,13 @@ export class TransactionsService {
   ) {}
 
   async saveTransaction(dto: CreateTransactionsDto): Promise<TransactionsDto> {
-    const candidateToCrediting = await this.userRepository.findUserById(
-      dto.toUser,
-    );
+    const candidateToCrediting = await this.userRepository.findUserById(dto.toUser);
 
     if (!candidateToCrediting) {
       throw new BadRequestException(ErrorEnum.TO_USER_WITH_THIS_ID_NOT_FOUND);
     }
 
-    const candidateWhoCrediting = await this.userRepository.findUserById(
-      dto.fromUser,
-    );
+    const candidateWhoCrediting = await this.userRepository.findUserById(dto.fromUser);
 
     if (!candidateWhoCrediting) {
       const transaction = plainToClass(TransactionsEntity, {
@@ -38,20 +34,17 @@ export class TransactionsService {
         toUser: dto.toUser,
       });
 
-      const createdTransaction =
-        await this.transactionRepository.saveTransaction(transaction);
+      const createdTransaction = await this.transactionRepository.saveTransaction(transaction);
 
-      return await this.transactionRepository.findTransactionById(
-        createdTransaction.identifiers[0].id,
-      );
+      return await this.transactionRepository.findTransactionById(createdTransaction.identifiers[0].id);
     }
 
-    const createdTransaction = await this.transactionRepository.saveTransaction(
-      dto,
-    );
+    const createdTransaction = await this.transactionRepository.saveTransaction(dto);
 
-    return await this.transactionRepository.findTransactionById(
-      createdTransaction.identifiers[0].id,
-    );
+    return await this.transactionRepository.findTransactionById(createdTransaction.identifiers[0].id);
+  }
+
+  async getAllTransactionsById(userId: string): Promise<TransactionsDto[]> {
+    return await this.transactionRepository.getAllTransactionsById(userId);
   }
 }
