@@ -7,13 +7,16 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { TransactionsModule } from './transactions/transactions.module';
 import { UserEntity } from './user/user.entity';
+import { BaseEntity } from './entitys/base.entity';
+import { TokensEntity } from './auth/tokens.entity';
+import { TransactionsEntity } from './transactions/transactions.entity';
 
 @Module({
   imports: [
     UserModule,
     AuthModule,
     TransactionsModule,
-    TypeOrmModule.forFeature([UserEntity]),
+    TypeOrmModule.forFeature([BaseEntity, TokensEntity, UserEntity, TransactionsEntity]),
     TypeOrmModule.forRoot({
       type: 'postgres',
       synchronize: true,
