@@ -6,32 +6,32 @@ import { TransactionsDto } from './dto/transaction.dto';
 import { ApiBadRequestResponse, ApiBody, ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { User } from '../user/decorators/user.decorator';
 import {
+  IBadRequestResponse,
   INotAuthorized,
-  ITransactionCreditingBadRequestResponse,
   ITransactionCreditingOkResponse,
   ITransactionCreditingRequestBody,
 } from '../types/swagger.interfaces';
 
-@ApiTags('transactions')
+@ApiTags('transaction')
 @Controller('transaction')
 export class TransactionsController {
   constructor(private readonly transactionsService: TransactionsService) {}
 
+  @Post('/crediting')
   @ApiOkResponse({ status: 200, description: 'Create transaction', type: ITransactionCreditingOkResponse })
-  @ApiBadRequestResponse({ status: 400, type: ITransactionCreditingBadRequestResponse })
+  @ApiBadRequestResponse({ status: 400, type: IBadRequestResponse })
   @ApiResponse({ status: 401, type: INotAuthorized })
   @ApiBody({ description: 'Create transaction request body', type: ITransactionCreditingRequestBody })
-  @Post('/crediting')
   @UseGuards(JwtAuthGuard)
   @HttpCode(200)
   async creditingBonuses(@Body() dto: CreateTransactionsDto): Promise<TransactionsDto> {
     return await this.transactionsService.saveTransaction(dto);
   }
 
-  @ApiOkResponse({ status: 200, description: 'Get all transactions', type: [ITransactionCreditingOkResponse] })
-  @ApiBadRequestResponse({ status: 400, type: ITransactionCreditingBadRequestResponse })
-  @ApiResponse({ status: 401, type: INotAuthorized })
   @Get('/all')
+  @ApiOkResponse({ status: 200, description: 'Get all transactions', type: [ITransactionCreditingOkResponse] })
+  @ApiBadRequestResponse({ status: 400, type: IBadRequestResponse })
+  @ApiResponse({ status: 401, type: INotAuthorized })
   @UseGuards(JwtAuthGuard)
   @HttpCode(200)
   async getAllUserTransactions(@User('id') userId: string): Promise<TransactionsDto[]> {

@@ -34,14 +34,14 @@ export class TransactionsService {
         toUser: dto.toUser,
       });
 
-      const createdTransaction = await this.transactionRepository.saveTransaction(transaction);
+      const insertedTransaction = await this.transactionRepository.saveTransaction(transaction);
 
-      return await this.transactionRepository.findTransactionById(createdTransaction.identifiers[0].id);
+      return await this.transactionRepository.findTransactionById(insertedTransaction.identifiers[0].id);
     }
 
-    const createdTransaction = await this.transactionRepository.saveTransaction(dto);
+    const insertedTransaction = await this.transactionRepository.saveTransaction(dto);
 
-    return await this.transactionRepository.findTransactionById(createdTransaction.identifiers[0].id);
+    return await this.transactionRepository.findTransactionById(insertedTransaction.identifiers[0].id);
   }
 
   async getAllTransactionsById(userId: string): Promise<TransactionsDto[]> {

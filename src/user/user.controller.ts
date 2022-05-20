@@ -4,17 +4,17 @@ import { ApiBadRequestResponse, ApiOkResponse, ApiResponse, ApiTags } from '@nes
 import { User } from './decorators/user.decorator';
 import { UserDto } from './dto/user.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { INotAuthorized, IUserGetBadRequestResponse, IUserGetOkResponse } from '../types/swagger.interfaces';
+import { IBadRequestResponse, INotAuthorized, IUserGetOkResponse } from '../types/swagger.interfaces';
 
-@ApiTags('users')
+@ApiTags('user')
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @ApiOkResponse({ status: 200, description: 'Get user', type: IUserGetOkResponse })
-  @ApiBadRequestResponse({ status: 400, type: IUserGetBadRequestResponse })
-  @ApiResponse({ status: 401, type: INotAuthorized })
   @Get('/get')
+  @ApiOkResponse({ status: 200, description: 'Get user', type: IUserGetOkResponse })
+  @ApiBadRequestResponse({ status: 400, type: IBadRequestResponse })
+  @ApiResponse({ status: 401, type: INotAuthorized })
   @UseGuards(JwtAuthGuard)
   @HttpCode(200)
   async getUser(@User('id') userId: string): Promise<UserDto> {

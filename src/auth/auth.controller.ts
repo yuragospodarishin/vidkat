@@ -5,10 +5,9 @@ import { LoginUserDto } from '../user/dto/login.user.dto';
 import { CreateUserDto } from '../user/dto/createUser.dto';
 import { TokensDto } from './dto/tokens.dto';
 import {
-  IAuthBadRequestBody,
   IAuthOkResponseTokens,
   IAuthRequestBody,
-  ILoginBadRequestBody,
+  IBadRequestResponse,
   ILoginOkResponseTokens,
   ILoginRequestBody,
 } from '../types/swagger.interfaces';
@@ -18,20 +17,20 @@ import {
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @ApiOkResponse({ description: 'Get tokens', status: 200, type: IAuthOkResponseTokens })
-  @ApiBadRequestResponse({ status: 400, type: IAuthBadRequestBody })
-  @ApiBody({ description: 'Authorization request body', type: IAuthRequestBody })
   @Post('/registration')
+  @ApiOkResponse({ description: 'Get tokens', status: 200, type: IAuthOkResponseTokens })
+  @ApiBadRequestResponse({ status: 400, type: IBadRequestResponse })
+  @ApiBody({ description: 'Authorization request body', type: IAuthRequestBody })
   @HttpCode(201)
   async registration(@Body() dto: CreateUserDto): Promise<TokensDto> {
     return await this.authService.registration(dto);
   }
 
-  @ApiOkResponse({ description: 'Get tokens', type: ILoginOkResponseTokens })
-  @ApiBadRequestResponse({ status: 400, type: ILoginBadRequestBody })
+  @Post('/login')
+  @ApiOkResponse({ status: 200, description: 'Get tokens', type: ILoginOkResponseTokens })
+  @ApiBadRequestResponse({ status: 400, type: IBadRequestResponse })
   @ApiBody({ description: 'Login request body', type: ILoginRequestBody })
   @HttpCode(200)
-  @Post('/login')
   async login(@Body() dto: LoginUserDto): Promise<TokensDto> {
     return await this.authService.login(dto);
   }

@@ -1,6 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { UserEntity } from '../user/user.entity';
-import { RoleEnum } from '../auth/enum/role.enum';
 
 export class IAuthOkResponseTokens {
   @ApiProperty({ example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6Ik......pbCI6IjFAZ' })
@@ -23,16 +22,6 @@ export class IAuthRequestBody {
   @ApiProperty({ example: '13Vitaliy13' })
   password: string;
 }
-export class IAuthBadRequestBody {
-  @ApiPropertyOptional({ example: 400 })
-  statusCode: 400;
-
-  @ApiPropertyOptional({ example: 'Email or phone is taken' })
-  message: string;
-
-  @ApiPropertyOptional({ example: 'Bad request' })
-  error: string;
-}
 
 export class ILoginOkResponseTokens {
   @ApiProperty({ example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6Ik......pbCI6IjFAZ' })
@@ -48,17 +37,6 @@ export class ILoginRequestBody {
 
   @ApiProperty({ example: '13Vitaliy13' })
   password: string;
-}
-
-export class ILoginBadRequestBody {
-  @ApiPropertyOptional({ example: 400 })
-  statusCode: 400;
-
-  @ApiPropertyOptional({ example: 'Credentials are not valid' })
-  message: string;
-
-  @ApiPropertyOptional({ example: 'Bad request' })
-  error: string;
 }
 
 export class ITransactionCreditingRequestBody {
@@ -88,17 +66,6 @@ export class ITransactionCreditingOkResponse {
   notes: string;
 }
 
-export class ITransactionCreditingBadRequestResponse {
-  @ApiPropertyOptional({ example: 400 })
-  statusCode: 400;
-
-  @ApiPropertyOptional({ example: 'Any error message' })
-  message: string;
-
-  @ApiPropertyOptional({ example: 'Bad request' })
-  error: string;
-}
-
 export class INotAuthorized {
   @ApiPropertyOptional({ example: 401 })
   statusCode: 401;
@@ -124,7 +91,23 @@ export class IUserGetOkResponse {
   email: string;
 }
 
-export class IUserGetBadRequestResponse {
+export class IFeedbackRequestBody {
+  @ApiProperty({ example: 'any feedback' })
+  feedback: string;
+}
+
+export class IFeedbackCreateOkResponse {
+  @ApiProperty({ example: '8ad3f37f-eef4-4f27-b1ac-10f4b3beaeb3' })
+  id: string;
+
+  @ApiProperty({ example: '2022-05-20T20:45:23.745Z' })
+  createdAt: Date;
+
+  @ApiProperty({ example: 'any feedback' })
+  feedback: string;
+}
+
+export class IBadRequestResponse {
   @ApiPropertyOptional({ example: 400 })
   statusCode: 400;
 

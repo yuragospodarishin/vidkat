@@ -10,6 +10,7 @@ import { UserEntity } from './user/user.entity';
 import { BaseEntity } from './entitys/base.entity';
 import { TokensEntity } from './auth/tokens.entity';
 import { TransactionsEntity } from './transactions/transactions.entity';
+import { FeedbackModule } from './feedback/feedback.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { TransactionsEntity } from './transactions/transactions.entity';
     ConfigModule.forRoot({
       envFilePath: ['./.env'],
     }),
+    FeedbackModule,
   ],
   controllers: [AppController],
   providers: [AppService, ConfigModule],
