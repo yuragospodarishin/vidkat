@@ -20,7 +20,6 @@ export class FeedbackService {
   }
 
   async getAllUserFeedback(userid: string): Promise<any> {
-    console.log(1);
     return await this.feedbackRepository.getAllUserFeedback(userid);
   }
 }

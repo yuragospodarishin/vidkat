@@ -10,7 +10,7 @@ export class TransactionsEntity extends BaseEntity {
   @Column({ default: null })
   amount: number;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamp with time zone' })
   createdAt: Date;
 
   @Column({ default: '', nullable: true })

@@ -7,6 +7,7 @@ import { CreateTransactionsDto } from './dto/create.transactions.dto';
 import { TransactionsEntity } from './transactions.entity';
 import { plainToClass } from 'class-transformer';
 import { TransactionsDto } from './dto/transaction.dto';
+import { addDays } from 'date-fns';
 
 @Injectable()
 export class TransactionsService {
@@ -17,7 +18,7 @@ export class TransactionsService {
     private readonly userRepository: UserRepository,
   ) {}
 
-  async saveTransaction(dto: CreateTransactionsDto): Promise<TransactionsDto> {
+  async createTransAction(dto: CreateTransactionsDto): Promise<TransactionsDto> {
     const candidateToCrediting = await this.userRepository.findUserById(dto.toUser);
 
     if (!candidateToCrediting) {
@@ -36,7 +37,14 @@ export class TransactionsService {
 
       const insertedTransaction = await this.transactionRepository.saveTransaction(transaction);
 
-      return await this.transactionRepository.findTransactionById(insertedTransaction.identifiers[0].id);
+      const createdTransaction = await this.transactionRepository.findTransactionById(insertedTransaction.identifiers[0].id);
+
+      return createdTransaction;
+    }
+
+    const balanceCandidateWhoCrediting = await this.getUserSumActiveBonuses(candidateWhoCrediting.id);
+    if (balanceCandidateWhoCrediting < dto.amount) {
+      throw new BadRequestException(ErrorEnum.NOT_ENOUGH_FUNDS_ON_BALANCE);
     }
 
     const insertedTransaction = await this.transactionRepository.saveTransaction(dto);
@@ -48,10 +56,22 @@ export class TransactionsService {
     return await this.transactionRepository.getAllTransactionsById(userId);
   }
 
-  async getSumAllUserTransactions(userId: string): Promise<number> {
-    const sumTransactionsFromUser = await this.transactionRepository.getSumAllUserTransactionsFromUser(userId);
+  async getUserSumActiveBonuses(userId: string): Promise<number> {
+    const newDate = addDays(new Date(), -14);
 
-    const sumTransactionsToUser = await this.transactionRepository.getSumAllUserTransactionsToUser(userId);
+    const sumTransactionsFromUser = await this.transactionRepository.getSumActiveBonusesFromUser(userId, newDate);
+
+    const sumTransactionsToUser = await this.transactionRepository.getSumActiveBonusesToUser(userId, newDate);
+
+    return sumTransactionsToUser - sumTransactionsFromUser;
+  }
+
+  async getUserSumBlockedBonuses(userId: string): Promise<number> {
+    const newDate = addDays(new Date(), -14);
+
+    const sumTransactionsFromUser = await this.transactionRepository.getSumBlockedBonusesFromUser(userId, newDate);
+
+    const sumTransactionsToUser = await this.transactionRepository.getSumBlockedBonusesToUser(userId, newDate);
 
     return sumTransactionsToUser - sumTransactionsFromUser;
   }

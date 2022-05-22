@@ -65,6 +65,7 @@ export class UserRepository extends Repository<UserEntity> {
     return await getConnection()
       .getRepository(UserEntity)
       .createQueryBuilder('user')
+      // .select(['user.id', 'user.phone'])
       // .leftJoinAndSelect('user.tokens', 'token')
       // .leftJoinAndSelect('user.feedbacks', 'feedback')
       .where('user.id = :id', { id: userId })

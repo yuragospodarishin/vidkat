@@ -12,6 +12,8 @@ export class TransactionsDto {
   @IsUUID()
   fromUser: UserEntity;
 
+  createdAt: Date;
+
   @ApiProperty({ example: 21, description: 'transaction amount' })
   @IsNotEmpty({ message: 'amount must be not empty' })
   @IsNumber()

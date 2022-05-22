@@ -11,6 +11,6 @@ export class LoginUserDto {
   @ApiProperty({ example: 'Password123', description: 'password' })
   @IsNotEmpty({ message: 'password must be not empty' })
   @IsString({ message: 'password must be a string' })
-  @Length(4, 16, { message: 'password must be min 4 and max 16 symbols' })
+  // @Length(4, 16, { message: 'password must be min 4 and max 16 symbols' })
   password: string;
 }

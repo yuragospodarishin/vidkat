@@ -32,6 +32,7 @@ export class AuthController {
   @ApiBody({ description: 'Login request body', type: ILoginRequestBody })
   @HttpCode(200)
   async login(@Body() dto: LoginUserDto): Promise<TokensDto> {
+    console.log(Date.now());
     return await this.authService.login(dto);
   }
 }

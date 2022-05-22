@@ -25,7 +25,7 @@ export class TransactionsController {
   @UseGuards(JwtAuthGuard)
   @HttpCode(200)
   async creditingBonuses(@Body() dto: CreateTransactionsDto): Promise<TransactionsDto> {
-    return await this.transactionsService.saveTransaction(dto);
+    return await this.transactionsService.createTransAction(dto);
   }
 
   @Get('/all')
@@ -37,12 +37,21 @@ export class TransactionsController {
     return await this.transactionsService.getAllTransactionsById(userId);
   }
 
-  @Get('/sum')
-  @ApiOkResponse({ status: 200, description: 'Sum all user transactions', type: Number })
+  @Get('/bonus/active')
+  @ApiOkResponse({ status: 200, description: 'Sum active bonuses in user', type: Number })
   @ApiBadRequestResponse({ status: 400, type: IBadRequestResponse })
   @ApiResponse({ status: 401, type: INotAuthorized })
   @UseGuards(JwtAuthGuard)
-  async getSumAllUserTransactions(@User('id') userId: string): Promise<number> {
-    return await this.transactionsService.getSumAllUserTransactions(userId);
+  async getUserSumActiveBonuses(@User('id') userId: string): Promise<number> {
+    return await this.transactionsService.getUserSumActiveBonuses(userId);
+  }
+
+  @Get('/bonus/blocked')
+  @ApiOkResponse({ status: 200, description: 'Sum blocked bonuses in user', type: Number })
+  @ApiBadRequestResponse({ status: 400, type: IBadRequestResponse })
+  @ApiResponse({ status: 401, type: INotAuthorized })
+  @UseGuards(JwtAuthGuard)
+  async getUserSumBlockedBonuses(@User('id') userId: string): Promise<number> {
+    return await this.transactionsService.getUserSumBlockedBonuses(userId);
   }
 }

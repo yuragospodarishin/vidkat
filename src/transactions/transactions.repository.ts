@@ -39,25 +39,51 @@ export class TransactionsRepository extends Repository<TransactionsEntity> {
       .getMany();
   }
 
-  async getSumAllUserTransactionsToUser(userId: string): Promise<number> {
-    const objSumAllTransactionsToUser = await getConnection()
-      .createQueryBuilder()
-      .select('SUM(transaction.amount)', 'sum')
-      .from(TransactionsEntity, 'transaction')
-      .where('transaction.toUser = :id', { id: userId })
-      .getRawOne();
-
-    return objSumAllTransactionsToUser.sum * 1;
-  }
-
-  async getSumAllUserTransactionsFromUser(userId: string): Promise<number> {
+  async getSumActiveBonusesFromUser(userId: string, newDate: Date): Promise<number> {
     const objSumAllTransactionsFromUser = await getConnection()
       .createQueryBuilder()
       .select('SUM(transaction.amount)', 'sum')
       .from(TransactionsEntity, 'transaction')
       .where('transaction.fromUser = :id', { id: userId })
+      .andWhere('transaction.createdAt <= :date', { date: newDate })
       .getRawOne();
 
     return objSumAllTransactionsFromUser.sum * 1;
+  }
+
+  async getSumActiveBonusesToUser(userId: string, newDate: Date): Promise<number> {
+    const objSumAllTransactionsToUser = await getConnection()
+      .createQueryBuilder()
+      .select('SUM(transaction.amount)', 'sum')
+      .from(TransactionsEntity, 'transaction')
+      .where('transaction.toUser = :id', { id: userId })
+      .andWhere('transaction.createdAt <= :date', { date: newDate })
+      .getRawOne();
+
+    return objSumAllTransactionsToUser.sum * 1;
+  }
+
+  async getSumBlockedBonusesFromUser(userId: string, newDate: Date): Promise<number> {
+    const objSumAllTransactionsToUser = await getConnection()
+      .createQueryBuilder()
+      .select('SUM(transaction.amount)', 'sum')
+      .from(TransactionsEntity, 'transaction')
+      .where('transaction.toUser = :id', { id: userId })
+      .andWhere('transaction.createdAt >= :date', { date: newDate })
+      .getRawOne();
+
+    return objSumAllTransactionsToUser.sum * 1;
+  }
+
+  async getSumBlockedBonusesToUser(userId: string, newDate: Date): Promise<number> {
+    const objSumAllTransactionsToUser = await getConnection()
+      .createQueryBuilder()
+      .select('SUM(transaction.amount)', 'sum')
+      .from(TransactionsEntity, 'transaction')
+      .where('transaction.toUser = :id', { id: userId })
+      .andWhere('transaction.createdAt >= :date', { date: newDate })
+      .getRawOne();
+
+    return objSumAllTransactionsToUser.sum * 1;
   }
 }
