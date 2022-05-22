@@ -33,8 +33,16 @@ export class TransactionsController {
   @ApiBadRequestResponse({ status: 400, type: IBadRequestResponse })
   @ApiResponse({ status: 401, type: INotAuthorized })
   @UseGuards(JwtAuthGuard)
-  @HttpCode(200)
   async getAllUserTransactions(@User('id') userId: string): Promise<TransactionsDto[]> {
     return await this.transactionsService.getAllTransactionsById(userId);
+  }
+
+  @Get('/sum')
+  @ApiOkResponse({ status: 200, description: 'Sum all user transactions', type: Number })
+  @ApiBadRequestResponse({ status: 400, type: IBadRequestResponse })
+  @ApiResponse({ status: 401, type: INotAuthorized })
+  @UseGuards(JwtAuthGuard)
+  async getSumAllUserTransactions(@User('id') userId: string): Promise<number> {
+    return await this.transactionsService.getSumAllUserTransactions(userId);
   }
 }

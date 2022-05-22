@@ -38,4 +38,26 @@ export class TransactionsRepository extends Repository<TransactionsEntity> {
       .where('transaction.fromUser = :id OR transaction.toUser = :id', { id: userId })
       .getMany();
   }
+
+  async getSumAllUserTransactionsToUser(userId: string): Promise<number> {
+    const objSumAllTransactionsToUser = await getConnection()
+      .createQueryBuilder()
+      .select('SUM(transaction.amount)', 'sum')
+      .from(TransactionsEntity, 'transaction')
+      .where('transaction.toUser = :id', { id: userId })
+      .getRawOne();
+
+    return objSumAllTransactionsToUser.sum * 1;
+  }
+
+  async getSumAllUserTransactionsFromUser(userId: string): Promise<number> {
+    const objSumAllTransactionsFromUser = await getConnection()
+      .createQueryBuilder()
+      .select('SUM(transaction.amount)', 'sum')
+      .from(TransactionsEntity, 'transaction')
+      .where('transaction.fromUser = :id', { id: userId })
+      .getRawOne();
+
+    return objSumAllTransactionsFromUser.sum * 1;
+  }
 }

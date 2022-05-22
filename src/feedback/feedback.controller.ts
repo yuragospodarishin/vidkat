@@ -35,7 +35,7 @@ export class FeedbackController {
   @ApiResponse({ status: 401, type: INotAuthorized })
   @HttpCode(200)
   @UseGuards(JwtAuthGuard)
-  async getAllUserFeedback(@User('id') userId: string): Promise<FeedbackDto[]> {
+  async getAllUserFeedback(@User('id') userId: string): Promise<any> {
     return await this.feedbackService.getAllUserFeedback(userId);
   }
 }

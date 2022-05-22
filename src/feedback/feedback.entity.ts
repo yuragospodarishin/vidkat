@@ -4,7 +4,7 @@ import { UserEntity } from '../user/user.entity';
 
 @Entity({ name: 'feedbacks' })
 export class FeedbackEntity extends BaseEntity {
-  @ManyToOne(() => UserEntity, (user) => user.id)
+  @ManyToOne(() => UserEntity, (user) => user.feedbacks)
   @JoinColumn()
   user: UserEntity;
 

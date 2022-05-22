@@ -18,11 +18,11 @@ export class UserEntity extends BaseEntity {
   @Column({ type: String })
   password: string;
 
-  @OneToMany(() => TransactionsEntity, (transaction) => transaction.id)
-  transactionFromUser: TransactionsEntity[];
+  @OneToMany(() => TransactionsEntity, (transaction) => transaction.fromUser)
+  transactionsFromUser: TransactionsEntity[];
 
-  @OneToMany(() => TransactionsEntity, (transaction) => transaction.id)
-  transactionToUser: TransactionsEntity[];
+  @OneToMany(() => TransactionsEntity, (transaction) => transaction.toUser)
+  transactionsToUser: TransactionsEntity[];
 
   @OneToMany(() => FeedbackEntity, (feedback) => feedback.user)
   feedbacks: FeedbackEntity[];
@@ -33,7 +33,7 @@ export class UserEntity extends BaseEntity {
   @Column({ type: String, default: null })
   banReason?: string;
 
-  @OneToOne(() => TokensEntity, (tokens) => tokens.id)
+  @OneToOne(() => TokensEntity, (tokens) => tokens.userId)
   tokens: TokensEntity;
 
   @Column({ type: String, default: null })

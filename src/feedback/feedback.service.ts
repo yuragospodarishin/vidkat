@@ -19,7 +19,8 @@ export class FeedbackService {
     return feedback;
   }
 
-  async getAllUserFeedback(userid: string): Promise<FeedbackDto[]> {
+  async getAllUserFeedback(userid: string): Promise<any> {
+    console.log(1);
     return await this.feedbackRepository.getAllUserFeedback(userid);
   }
 }

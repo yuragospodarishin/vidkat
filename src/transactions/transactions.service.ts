@@ -47,4 +47,12 @@ export class TransactionsService {
   async getAllTransactionsById(userId: string): Promise<TransactionsDto[]> {
     return await this.transactionRepository.getAllTransactionsById(userId);
   }
+
+  async getSumAllUserTransactions(userId: string): Promise<number> {
+    const sumTransactionsFromUser = await this.transactionRepository.getSumAllUserTransactionsFromUser(userId);
+
+    const sumTransactionsToUser = await this.transactionRepository.getSumAllUserTransactionsToUser(userId);
+
+    return sumTransactionsToUser - sumTransactionsFromUser;
+  }
 }

@@ -10,7 +10,7 @@ export class TokensEntity extends BaseEntity {
   @Column()
   refreshToken: string;
 
-  @OneToOne(() => UserEntity, (user) => user.id)
+  @OneToOne(() => UserEntity, (user) => user.tokens)
   @JoinColumn({ name: 'userId' })
   userId: UserEntity;
 }
