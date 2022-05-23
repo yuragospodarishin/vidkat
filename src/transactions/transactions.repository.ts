@@ -45,7 +45,7 @@ export class TransactionsRepository extends Repository<TransactionsEntity> {
       .select('SUM(transaction.amount)', 'sum')
       .from(TransactionsEntity, 'transaction')
       .where('transaction.fromUser = :id', { id: userId })
-      .andWhere('transaction.createdAt <= :date', { date: newDate })
+      .andWhere('transaction.createdAt < :date', { date: newDate })
       .getRawOne();
 
     return objSumAllTransactionsFromUser.sum * 1;
@@ -57,7 +57,7 @@ export class TransactionsRepository extends Repository<TransactionsEntity> {
       .select('SUM(transaction.amount)', 'sum')
       .from(TransactionsEntity, 'transaction')
       .where('transaction.toUser = :id', { id: userId })
-      .andWhere('transaction.createdAt <= :date', { date: newDate })
+      .andWhere('transaction.createdAt < :date', { date: newDate })
       .getRawOne();
 
     return objSumAllTransactionsToUser.sum * 1;
@@ -68,8 +68,8 @@ export class TransactionsRepository extends Repository<TransactionsEntity> {
       .createQueryBuilder()
       .select('SUM(transaction.amount)', 'sum')
       .from(TransactionsEntity, 'transaction')
-      .where('transaction.toUser = :id', { id: userId })
-      .andWhere('transaction.createdAt >= :date', { date: newDate })
+      .where('transaction.fromUser = :id', { id: userId })
+      .andWhere('transaction.createdAt > :date', { date: newDate })
       .getRawOne();
 
     return objSumAllTransactionsToUser.sum * 1;
@@ -81,7 +81,7 @@ export class TransactionsRepository extends Repository<TransactionsEntity> {
       .select('SUM(transaction.amount)', 'sum')
       .from(TransactionsEntity, 'transaction')
       .where('transaction.toUser = :id', { id: userId })
-      .andWhere('transaction.createdAt >= :date', { date: newDate })
+      .andWhere('transaction.createdAt > :date', { date: newDate })
       .getRawOne();
 
     return objSumAllTransactionsToUser.sum * 1;

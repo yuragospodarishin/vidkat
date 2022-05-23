@@ -44,7 +44,7 @@ export class TransactionsService {
 
     const balanceCandidateWhoCrediting = await this.getUserSumActiveBonuses(candidateWhoCrediting.id);
     if (balanceCandidateWhoCrediting < dto.amount) {
-      throw new BadRequestException(ErrorEnum.NOT_ENOUGH_FUNDS_ON_BALANCE);
+      throw new BadRequestException(ErrorEnum.NOT_ENOUGH_ACTIVE_BONUSES_ON_BALANCE);
     }
 
     const insertedTransaction = await this.transactionRepository.saveTransaction(dto);

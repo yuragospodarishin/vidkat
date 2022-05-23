@@ -37,7 +37,7 @@ export class TransactionsController {
     return await this.transactionsService.getAllTransactionsById(userId);
   }
 
-  @Get('/bonus/active')
+  @Get('/bonuses/active')
   @ApiOkResponse({ status: 200, description: 'Sum active bonuses in user', type: Number })
   @ApiBadRequestResponse({ status: 400, type: IBadRequestResponse })
   @ApiResponse({ status: 401, type: INotAuthorized })
@@ -46,7 +46,7 @@ export class TransactionsController {
     return await this.transactionsService.getUserSumActiveBonuses(userId);
   }
 
-  @Get('/bonus/blocked')
+  @Get('/bonuses/blocked')
   @ApiOkResponse({ status: 200, description: 'Sum blocked bonuses in user', type: Number })
   @ApiBadRequestResponse({ status: 400, type: IBadRequestResponse })
   @ApiResponse({ status: 401, type: INotAuthorized })
