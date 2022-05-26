@@ -17,6 +17,7 @@ import { FeedbackModule } from './feedback/feedback.module';
     UserModule,
     AuthModule,
     TransactionsModule,
+    FeedbackModule,
     TypeOrmModule.forFeature([BaseEntity, TokensEntity, UserEntity, TransactionsEntity]),
     TypeOrmModule.forRoot({
       type: 'postgres',
@@ -32,12 +33,52 @@ import { FeedbackModule } from './feedback/feedback.module';
       // password: '0000',
       // database: 'vidkatapi',
     }),
+    // TypeOrmModule.forRootAsync({
+    //   useFactory: () => ({
+    //     type: 'postgres',
+    //     host: 'localhost',
+    //     port: 5433,
+    //     username: 'yura',
+    //     password: '0000',
+    //     database: 'vidkatapi',
+    //     entities: [__dirname + '/**/*.entity{.ts,.js}'],
+    //     synchronize: true,
+    //   }),
+    // }),
     ConfigModule.forRoot({
       envFilePath: ['./.env'],
     }),
-    FeedbackModule,
   ],
   controllers: [AppController],
   providers: [AppService, ConfigModule],
 })
 export class AppModule {}
+
+// import { Module } from '@nestjs/common';
+// import { TypeOrmModule } from '@nestjs/typeorm';
+// import { ConfigModule, ConfigService } from '@nestjs/config';
+// import { UserModule } from './user/user.module';
+// import { AuthModule } from './auth/auth.module';
+// import { TransactionsModule } from './transactions/transactions.module';
+// import { FeedbackModule } from './feedback/feedback.module';
+// import { PostgresDBConfigService } from './orm.config';
+//
+// @Module({
+//   imports: [
+//     TypeOrmModule.forFeature([UserModule, AuthModule, TransactionsModule, FeedbackModule]),
+//     ConfigModule.forRoot({
+//       envFilePath: ['./.env'],
+//     }),
+//     // TypeOrmModule.forRootAsync({
+//     //   useClass: PostgresDBConfigService,
+//     //   inject: [PostgresDBConfigService, ConfigService],
+//     //   imports: [ConfigModule],
+//     // }),
+//     TypeOrmModule.forRootAsync({
+//       useClass: PostgresDBConfigService,
+//       inject: [PostgresDBConfigService, ConfigService],
+//       imports: [ConfigModule],
+//     }),
+//   ],
+// })
+// export class AppModule {}
