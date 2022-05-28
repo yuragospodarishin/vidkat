@@ -12,8 +12,8 @@ import { TokensEntity } from './auth/tokens.entity';
 import { TransactionsEntity } from './transactions/transactions.entity';
 import { FeedbackModule } from './feedback/feedback.module';
 import { ScheduleModule } from '@nestjs/schedule';
-import { PostgresDBConfigService } from './ormconfig';
 import { createConnection } from 'typeorm';
+import { PostgresDBConfigServiceForStage } from './ormConfigForStage';
 
 @Module({
   imports: [
@@ -38,8 +38,8 @@ import { createConnection } from 'typeorm';
     //   // database: 'vidkatapi',
     // }),
     TypeOrmModule.forRootAsync({
-      useClass: PostgresDBConfigService,
-      inject: [PostgresDBConfigService, ConfigService],
+      useClass: PostgresDBConfigServiceForStage,
+      inject: [PostgresDBConfigServiceForStage, ConfigService],
       imports: [ConfigModule],
       connectionFactory: async (options) => {
         const connection = await createConnection(options);
