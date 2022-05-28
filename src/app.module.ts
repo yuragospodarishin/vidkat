@@ -11,6 +11,7 @@ import { UserModule } from './user/user.module';
 import { FeedbackModule } from './feedback/feedback.module';
 import { TransactionsModule } from './transactions/transactions.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { createConnection } from 'typeorm';
 
 @Module({
   imports: [
@@ -27,7 +28,12 @@ import { ScheduleModule } from '@nestjs/schedule';
       useClass: PostgresDBConfigService,
       inject: [PostgresDBConfigService, ConfigService],
       imports: [ConfigModule],
+      connectionFactory: async (options) => {
+        const connection = await createConnection(options);
+        return connection;
+      },
     }),
   ],
+  providers: [ConfigService],
 })
 export class AppModule {}
