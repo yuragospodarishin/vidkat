@@ -1,11 +1,15 @@
-import { Column, Entity, OneToMany, OneToOne } from 'typeorm';
-import { BaseEntity } from '../entitys/base.entity';
+import { Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { TokensEntity } from '../auth/tokens.entity';
 import { TransactionsEntity } from '../transactions/transactions.entity';
 import { FeedbackEntity } from '../feedback/feedback.entity';
+import { ApiProperty } from '@nestjs/swagger';
 
 @Entity({ name: 'users' })
-export class UserEntity extends BaseEntity {
+export class UserEntity {
+  @ApiProperty({ example: '1', description: 'id' })
+  @PrimaryGeneratedColumn()
+  id: number;
+
   @Column({ type: String, default: null })
   name: string;
 

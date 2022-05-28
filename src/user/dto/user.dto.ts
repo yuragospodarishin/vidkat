@@ -1,10 +1,4 @@
-import {
-  IsBoolean,
-  IsEmail,
-  IsNotEmpty,
-  IsString,
-  Length,
-} from 'class-validator';
+import { IsBoolean, IsEmail, IsNotEmpty, IsNumber, IsString, Length } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class UserDto {
@@ -29,8 +23,8 @@ export class UserDto {
     description: 'uuid',
   })
   @IsNotEmpty({ message: 'id must be not empty' })
-  @IsString({ message: 'id must be a string' })
-  id: string;
+  @IsNumber()
+  id: number;
 
   @ApiProperty({ example: 'user@gmail.com', description: 'email' })
   @IsNotEmpty({ message: 'email must be not empty' })
@@ -56,6 +50,4 @@ export class UserDto {
   @IsNotEmpty({ message: 'role must be not empty' })
   @IsString({ message: 'role must be a string' })
   role?: string;
-
-  amount?: number;
 }

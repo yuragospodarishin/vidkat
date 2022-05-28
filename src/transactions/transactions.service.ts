@@ -8,6 +8,8 @@ import { TransactionsEntity } from './transactions.entity';
 import { plainToClass } from 'class-transformer';
 import { TransactionsDto } from './dto/transaction.dto';
 import { addDays } from 'date-fns';
+import { UserBonusesDto } from './dto/user.bonuses.dto';
+import { Cron } from '@nestjs/schedule';
 
 @Injectable()
 export class TransactionsService {
@@ -33,17 +35,21 @@ export class TransactionsService {
         amount: dto.amount,
         notes: dto.notes,
         toUser: dto.toUser,
+        amountStatus: dto.amountStatus,
+        type: dto.type,
+        transactionStatus: dto.transactionStatus,
       });
 
-      const insertedTransaction = await this.transactionRepository.saveTransaction(transaction);
+      const insertResult = await this.transactionRepository.saveTransaction(transaction);
 
-      const createdTransaction = await this.transactionRepository.findTransactionById(insertedTransaction.identifiers[0].id);
+      const createdTransaction = await this.transactionRepository.findTransactionById(insertResult.identifiers[0].id);
 
       return createdTransaction;
     }
 
     const balanceCandidateWhoCrediting = await this.getUserSumActiveBonuses(candidateWhoCrediting.id);
-    if (balanceCandidateWhoCrediting < dto.amount) {
+
+    if (balanceCandidateWhoCrediting.total < dto.amount) {
       throw new BadRequestException(ErrorEnum.NOT_ENOUGH_ACTIVE_BONUSES_ON_BALANCE);
     }
 
@@ -52,27 +58,56 @@ export class TransactionsService {
     return await this.transactionRepository.findTransactionById(insertedTransaction.identifiers[0].id);
   }
 
-  async getAllTransactionsById(userId: string): Promise<TransactionsDto[]> {
-    return await this.transactionRepository.getAllTransactionsById(userId);
+  async getAllTransactionsById(userId: number): Promise<TransactionsDto[]> {
+    return await this.transactionRepository.getAllTransactionsByUserId(userId);
   }
 
-  async getUserSumActiveBonuses(userId: string): Promise<number> {
+  async getUserSumBlockedBonuses(userId: number): Promise<UserBonusesDto> {
     const newDate = addDays(new Date(), -14);
 
-    const sumTransactionsFromUser = await this.transactionRepository.getSumActiveBonusesFromUser(userId, newDate);
+    const sumBlockedPersonalBonuses = await this.transactionRepository.getSumBlockedPersonalBonuses(userId, newDate);
 
-    const sumTransactionsToUser = await this.transactionRepository.getSumActiveBonusesToUser(userId, newDate);
+    const sumBlockedReferralBonuses = await this.transactionRepository.getSumBlockedReferralBonuses(userId, newDate);
 
-    return sumTransactionsToUser - sumTransactionsFromUser;
+    const sumBlockedExtraBonuses = await this.transactionRepository.getSumBlockedExtraBonuses(userId, newDate);
+
+    const sumTotalBlockedBonuses = sumBlockedPersonalBonuses + sumBlockedReferralBonuses + sumBlockedExtraBonuses;
+
+    const objBonuses = {
+      total: sumTotalBlockedBonuses,
+      personal: sumBlockedPersonalBonuses,
+      referral: sumBlockedReferralBonuses,
+      extra: sumBlockedExtraBonuses,
+    };
+
+    return objBonuses;
   }
 
-  async getUserSumBlockedBonuses(userId: string): Promise<number> {
+  async getUserSumActiveBonuses(userId: number): Promise<UserBonusesDto> {
     const newDate = addDays(new Date(), -14);
 
-    const sumTransactionsFromUser = await this.transactionRepository.getSumBlockedBonusesFromUser(userId, newDate);
+    const sumActivePersonalBonuses = await this.transactionRepository.getSumActivePersonalBonuses(userId, newDate);
 
-    const sumTransactionsToUser = await this.transactionRepository.getSumBlockedBonusesToUser(userId, newDate);
+    const sumActiveReferralBonuses = await this.transactionRepository.getSumActiveReferralBonuses(userId, newDate);
 
-    return sumTransactionsToUser - sumTransactionsFromUser;
+    const sumActiveExtraBonuses = await this.transactionRepository.getSumActiveExtraBonuses(userId, newDate);
+
+    const sumTotalActiveBonuses = sumActivePersonalBonuses + sumActiveReferralBonuses + sumActiveExtraBonuses;
+
+    const objBonuses = {
+      total: sumTotalActiveBonuses,
+      personal: sumActivePersonalBonuses,
+      referral: sumActiveReferralBonuses,
+      extra: sumActiveExtraBonuses,
+    };
+
+    return objBonuses;
+  }
+
+  @Cron('0 0 0 * * *')
+  async updateBonusStatus() {
+    const newDate = addDays(new Date(), -14);
+
+    await this.transactionRepository.updateBonusStatusOnActive(newDate);
   }
 }

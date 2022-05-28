@@ -1,6 +1,6 @@
-import { createQueryBuilder, EntityRepository, getConnection, Repository } from 'typeorm';
+import { EntityRepository, getConnection, Repository } from 'typeorm';
 import { UserEntity } from './user.entity';
-import { CreateUserDto } from './dto/createUser.dto';
+import { CreateUserDto } from './dto/create.user.dto';
 import { UserDto } from './dto/user.dto';
 
 @EntityRepository(UserEntity)
@@ -8,6 +8,7 @@ export class UserRepository extends Repository<UserEntity> {
   constructor() {
     super();
   }
+
   async saveUserInDB(dto: CreateUserDto): Promise<UserDto> {
     await getConnection()
       .createQueryBuilder()
@@ -48,7 +49,7 @@ export class UserRepository extends Repository<UserEntity> {
       .getOne();
   }
 
-  async findUserById(id): Promise<UserDto> {
+  async findUserById(id: number): Promise<UserDto> {
     try {
       return await getConnection()
         .createQueryBuilder()
@@ -61,7 +62,7 @@ export class UserRepository extends Repository<UserEntity> {
     }
   }
 
-  async getUser(userId: string): Promise<UserDto> {
+  async getUser(userId: number): Promise<UserDto> {
     return await getConnection()
       .getRepository(UserEntity)
       .createQueryBuilder('user')

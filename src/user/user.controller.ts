@@ -17,7 +17,7 @@ export class UserController {
   @ApiResponse({ status: 401, type: INotAuthorized })
   @UseGuards(JwtAuthGuard)
   @HttpCode(200)
-  async getUser(@User('id') userId: string): Promise<UserDto> {
+  async getUser(@User('id') userId: number): Promise<UserDto> {
     return await this.userService.getUser(userId);
   }
   // @ApiOperation({ summary: 'Ban user', description: 'only admin ban user' })

@@ -27,8 +27,6 @@ export class CreateUserDto {
 
   banReason?: string;
 
-  amount?: number;
-
   // @ApiProperty({ example: 'ADMIN', description: 'role' })
   // @IsNotEmpty({ message: 'role must be not empty' })
   // @IsEnum(RoleEnum, { message: 'role must be a role enum' })

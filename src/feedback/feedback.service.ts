@@ -16,10 +16,11 @@ export class FeedbackService {
     const insertedFeedback = await this.feedbackRepository.createFeedback(dto, user);
 
     const feedback = await this.feedbackRepository.getFeedbackById(insertedFeedback.identifiers[0].id);
+
     return feedback;
   }
 
-  async getAllUserFeedback(userid: string): Promise<any> {
+  async getAllUserFeedback(userid: number): Promise<FeedbackDto[]> {
     return await this.feedbackRepository.getAllUserFeedback(userid);
   }
 }

@@ -19,23 +19,23 @@ export class FeedbackController {
   constructor(private readonly feedbackService: FeedbackService) {}
 
   @Post('/create')
+  @HttpCode(201)
   @ApiBody({ description: 'Create feedback request body', type: IFeedbackRequestBody })
   @ApiOkResponse({ status: 201, description: 'Create feedback', type: IFeedbackCreateOkResponse })
   @ApiBadRequestResponse({ status: 400, type: IBadRequestResponse })
   @ApiResponse({ status: 401, type: INotAuthorized })
-  @HttpCode(201)
   @UseGuards(JwtAuthGuard)
   async createFeedback(@Body() dto: CreateFeedbackDto, @User() user: UserEntity): Promise<FeedbackDto> {
     return await this.feedbackService.createFeedback(dto, user);
   }
 
   @Get('/all')
+  @HttpCode(200)
   @ApiOkResponse({ status: 200, description: 'Create feedback', type: [IFeedbackCreateOkResponse] })
   @ApiBadRequestResponse({ status: 400, type: IBadRequestResponse })
   @ApiResponse({ status: 401, type: INotAuthorized })
-  @HttpCode(200)
   @UseGuards(JwtAuthGuard)
-  async getAllUserFeedback(@User('id') userId: string): Promise<any> {
+  async getAllUserFeedback(@User('id') userId: number): Promise<FeedbackDto[]> {
     return await this.feedbackService.getAllUserFeedback(userId);
   }
 }

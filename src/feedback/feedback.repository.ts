@@ -1,12 +1,4 @@
-import {
-  createQueryBuilder,
-  EntityRepository,
-  getConnection,
-  getManager,
-  getRepository,
-  InsertResult,
-  Repository,
-} from 'typeorm';
+import { EntityRepository, getConnection, InsertResult, Repository } from 'typeorm';
 import { FeedbackEntity } from './feedback.entity';
 import { UserEntity } from '../user/user.entity';
 import { CreateFeedbackDto } from './dto/create.feedback.dto';
@@ -46,7 +38,7 @@ export class FeedbackRepository extends Repository<FeedbackEntity> {
       .getOne();
   }
 
-  async getAllUserFeedback(userId: string): Promise<any> {
+  async getAllUserFeedback(userId: number): Promise<FeedbackDto[]> {
     return await getConnection()
       .createQueryBuilder()
       .select('feedback')

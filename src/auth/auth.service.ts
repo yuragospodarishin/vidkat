@@ -1,9 +1,5 @@
-import {
-  BadRequestException,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
-import { CreateUserDto } from '../user/dto/createUser.dto';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { CreateUserDto } from '../user/dto/create.user.dto';
 import { LoginUserDto } from '../user/dto/login.user.dto';
 import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
@@ -27,10 +23,7 @@ export class AuthService {
   ) {}
 
   async registration(dto: CreateUserDto): Promise<TokensDto> {
-    const candidate = await this.userRepository.findUserByEmailAndPhone(
-      dto.email,
-      dto.phone,
-    );
+    const candidate = await this.userRepository.findUserByEmailAndPhone(dto.email, dto.phone);
 
     if (candidate) {
       throw new BadRequestException(ErrorEnum.EMAIL_OR_PHONE_IS_TAKEN);

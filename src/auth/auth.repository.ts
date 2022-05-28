@@ -36,7 +36,7 @@ export class AuthRepository extends Repository<TokensEntity> {
     return await this.findTokensByUserId(user.id);
   }
 
-  async findTokensByUserId(id: string): Promise<TokensDto> {
+  async findTokensByUserId(id: number): Promise<TokensDto> {
     return await getConnection()
       .createQueryBuilder()
       .select('tokens')

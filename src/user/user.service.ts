@@ -10,7 +10,7 @@ export class UserService {
     private readonly userRepository: UserRepository,
   ) {}
 
-  async getUser(userId: string): Promise<UserDto> {
+  async getUser(userId: number): Promise<UserDto> {
     const user = await this.userRepository.getUser(userId);
     delete user.password;
 
