@@ -104,7 +104,7 @@ export class TransactionsService {
     return objBonuses;
   }
 
-  @Cron('0 0 0 * * *')
+  @Cron('0 0 * * * *')
   async updateBonusStatus() {
     const newDate = addDays(new Date(), -14);
 
