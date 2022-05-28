@@ -61,7 +61,7 @@ import { createConnection } from 'typeorm';
       // }),
     }),
     ConfigModule.forRoot({
-      envFilePath: ['./.env'],
+      envFilePath: ['./.development.env'],
     }),
   ],
   controllers: [AppController],
