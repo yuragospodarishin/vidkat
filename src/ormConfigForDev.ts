@@ -11,13 +11,6 @@ export class PostgresDBConfigServiceForDev implements TypeOrmOptionsFactory {
       type: 'postgres',
       synchronize: true,
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      // url: this.configService.get<string>('URL_DB_STAGE'),
-      // ssl: true,
-      // extra: {
-      //   ssl: {
-      //     rejectUnauthorized: false,
-      //   },
-      // },
       host: this.configService.get<string>('POSTGRES_HOST'),
       port: this.configService.get<number>('POSTGRES_PORT'),
       username: this.configService.get<string>('POSTGRES_USERNAME'),
